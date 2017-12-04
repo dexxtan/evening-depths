@@ -1,13 +1,20 @@
-<html>
+<html ng-app="upDownVoteApp">
   <head>
     <script type="text/javascript" src="scripts/angular.min.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
   </head>
   <body>
-    <div class="main">
+    <div class="main" ng-controller="UpDownVoteController">
       <div class="top">
+        <h3>Add New Topic</h3>
+        <input type="text" ng-model="newTopic" maxlength="255" />
+        <input type="button" value="Add" ng-click="addNewTopic(newTopic)" />
       </div>
       <div class="main">
+        <h3>Topics</h3>
+        <ul>
+          <li ng-repeat="topic in topics | orderBy:'score' | limitTo: 20">{{topic.name}}</li>
+        </ul>
       </div>
     </div>
   </body>
