@@ -12,9 +12,7 @@
       </div>
       <div class="main">
         <h3>Topics</h3>
-        <ul>
-          <li ng-repeat="topic in topics | orderBy:'score' | limitTo: 20">{{topic.name}}</li>
-        </ul>
+        <votable-topic ng-repeat="topic in topics | orderBy:'-score' | limitTo: 20" data="topic" />
       </div>
     </div>
   </body>
