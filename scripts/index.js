@@ -1,31 +1,16 @@
 const upDownVoteApp = angular.module('upDownVoteApp', []);
-const topics = [];
 
-upDownVoteApp.controller('UpDownVoteController', function UpDownVoteController($scope) {
+upDownVoteApp.controller('UpDownVoteController', function UpDownVoteController($scope, topicService) {
   $scope.newTopic = '';
-  $scope.topics = topics;
-  const initialUpVoteScore = 0;
-  const initialDownVoteScore = 0;
-  const initialTopicScore = initialUpVoteScore - initialDownVoteScore;
-  let topicCounter = 0;
+  $scope.topics = topicService.getTopics();
 
   $scope.addNewTopic = function(newTopicName) {
-    const topic = {
-      id: topicCounter,
-      name: newTopicName,
-      upvotes: initialUpVoteScore,
-      downvotes: initialDownVoteScore,
-      score: initialTopicScore
-    };
-
-    topicCounter++;
-
-    $scope.topics.push(topic);
+    topicService.addTopic(newTopicName);
     $scope.newTopic = '';
   }
 });
 
-upDownVoteApp.directive('votableTopic', function votableTopic() {
+angular.module('upDownVoteApp').directive('votableTopic', function votableTopic() {
   return {
     restrict: 'E',
     scope: {
@@ -47,5 +32,32 @@ upDownVoteApp.directive('votableTopic', function votableTopic() {
         topic.score = topic.upvotes - topic.downvotes;
       }
     }]
+  }
+});
+
+angular.module('upDownVoteApp').factory('topicService', function() {
+  const topics = [];
+  let topicCounter = 0;
+  const initialUpVoteScore = 0;
+  const initialDownVoteScore = 0;
+  const initialTopicScore = initialUpVoteScore - initialDownVoteScore;
+
+  return {
+    getTopics: function() {
+      return topics;
+    },
+    addTopic: function(topicName) {
+      const topic = {
+        id: topicCounter,
+        name: topicName,
+        upvotes: initialUpVoteScore,
+        downvotes: initialDownVoteScore,
+        score: initialTopicScore
+      };
+
+      topicCounter++;
+
+      topics.push(topic);
+    }
   }
 });
