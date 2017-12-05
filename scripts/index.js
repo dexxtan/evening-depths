@@ -15,10 +15,7 @@ upDownVoteApp.controller('UpDownVoteController', function UpDownVoteController($
       name: newTopicName,
       upvotes: initialUpVoteScore,
       downvotes: initialDownVoteScore,
-      score: initialTopicScore,
-      recalculateScore: function() {
-        this.score = this.upvotes - this.downvotes;
-      }
+      score: initialTopicScore
     };
 
     topicCounter++;
@@ -38,12 +35,16 @@ upDownVoteApp.directive('votableTopic', function votableTopic() {
     controller: ['$scope', function VotableTopicController($scope) {
       $scope.upvote = function() {
         $scope.topic.upvotes++;
-        $scope.topic.recalculateScore();
+        recalculateScore($scope.topic);
       }
 
       $scope.downvote = function() {
         $scope.topic.downvotes++;
-        $scope.topic.recalculateScore();
+        recalculateScore($scope.topic);
+      }
+
+      function recalculateScore(topic) {
+        topic.score = topic.upvotes - topic.downvotes;
       }
     }]
   }
